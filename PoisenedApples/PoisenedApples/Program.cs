@@ -31,10 +31,10 @@ namespace PoisenedApples
 										.Count();
 
 			var sequentialGreenApples = p.PickApples()
-										   .Take(10000)
-										   .Skip(1)
-										   .Zip(p.PickApples().Take(10000), (a, b) => a.Colour == "Green" && b.Colour == "Green")
-										   .Where(a => a == true).Count();
+										 .Take(10000)
+										 .Skip(1)
+										 .Zip(p.PickApples().Take(10000), (a, b) => a.Colour == "Green" && b.Colour == "Green")
+									     .Where(a => a == true).Count();
 
 
 			Console.WriteLine($"Poisoned apples in 10,000 = {poisoned}");
