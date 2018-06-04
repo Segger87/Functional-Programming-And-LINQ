@@ -12,7 +12,7 @@ namespace PoisenedApples
 		{
 			var p = new Program();
 
-			var poisened = p.PickApples()
+			var poisoned = p.PickApples()
 							.Take(10000)
 							.Where(apple => apple.Poisoned == true)
 							.Count();
@@ -23,9 +23,22 @@ namespace PoisenedApples
 										   .GroupBy(apple => apple.Colour)
 										   .Select(apple => new { colour = apple.Key, count = apple.Count() })
 										   .FirstOrDefault(apple => apple.colour != "Red");
-			
-			Console.WriteLine($"Poisened apples in 10,000 = {poisened}");
-			Console.WriteLine($"Most Common Color for Poisened apples = {mostCommonPoisenedColor.colour}, {mostCommonPoisenedColor.count}");
+
+			var nonPoisonedRedInARow = p.PickApples()
+										.Take(10000)
+										.Where(apple => apple.Colour == "Red")
+										.TakeWhile(apple => !apple.Poisoned)
+										.Count();
+
+
+			var greenApplesInARow = p.PickApples()
+									 .Take(10000)
+									 .Aggregate(0, (current, next) => next.Colour == "Green" ? current += 1 : current);
+
+			Console.WriteLine($"Poisoned apples in 10,000 = {poisoned}");
+			Console.WriteLine($"Most Common Color for Poisoned apples = {mostCommonPoisenedColor.colour}, {mostCommonPoisenedColor.count}");
+			Console.WriteLine($"Max non Poisoned Red Apples in a row = {nonPoisonedRedInARow}");
+			Console.WriteLine($" = {greenApplesInARow}");
 			Console.ReadLine();
 		}
 		private IEnumerable<Apple> PickApples()
