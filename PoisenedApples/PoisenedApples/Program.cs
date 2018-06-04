@@ -11,9 +11,21 @@ namespace PoisenedApples
 		static void Main(string[] args)
 		{
 			var p = new Program();
-			var poisened = p.PickApples().Take(10000).Where(apple => apple.Poisoned == true);
 
-			Console.WriteLine(poisened.Count());
+			var poisened = p.PickApples()
+							.Take(10000)
+							.Where(apple => apple.Poisoned == true)
+							.Count();
+
+			var mostCommonPoisenedColor = p.PickApples()
+										   .Take(10000)
+										   .Where(apple => apple.Poisoned == true)
+										   .GroupBy(apple => apple.Colour)
+										   .Select(apple => new { colour = apple.Key, count = apple.Count() })
+										   .FirstOrDefault(apple => apple.colour != "Red");
+			
+			Console.WriteLine($"Poisened apples in 10,000 = {poisened}");
+			Console.WriteLine($"Most Common Color for Poisened apples = {mostCommonPoisenedColor.colour}, {mostCommonPoisenedColor.count}");
 			Console.ReadLine();
 		}
 		private IEnumerable<Apple> PickApples()
