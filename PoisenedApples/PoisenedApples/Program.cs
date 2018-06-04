@@ -18,23 +18,23 @@ namespace PoisenedApples
 							.Count();
 
 			var mostCommonPoisenedColor = p.PickApples()
-										   .Take(10000)
-										   .Where(apple => apple.Poisoned == true)
-										   .GroupBy(apple => apple.Colour)
-										   .Select(apple => new { colour = apple.Key, count = apple.Count() })
-										   .FirstOrDefault(apple => apple.colour != "Red");
+				.Take(10000)
+				.Where(apple => apple.Poisoned == true)
+				.GroupBy(apple => apple.Colour).Select(apple => new { colour = apple.Key, count = apple.Count() })
+				.FirstOrDefault(apple => apple.colour != "Red");
 
 			var nonPoisonedRedInARow = p.PickApples()
-										.Take(10000)
-										.Where(apple => apple.Colour == "Red")
-										.TakeWhile(apple => !apple.Poisoned)
-										.Count();
+				.Take(10000)
+				.Where(apple => apple.Colour == "Red")
+				.TakeWhile(apple => !apple.Poisoned)
+				.Count();
 
 			var sequentialGreenApples = p.PickApples()
-										 .Take(10000)
-										 .Skip(1)
-										 .Zip(p.PickApples().Take(10000), (a, b) => a.Colour == "Green" && b.Colour == "Green")
-									     .Where(a => a == true).Count();
+				.Take(10000)
+				.Skip(1)
+				.Zip(p.PickApples()
+				.Take(10000), (a, b) => a.Colour == "Green" && b.Colour == "Green")
+				.Where(a => a == true).Count();
 
 
 			Console.WriteLine($"Poisoned apples in 10,000 = {poisoned}");
