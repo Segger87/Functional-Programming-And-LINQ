@@ -13,9 +13,9 @@ namespace PoisenedApples
 			var p = new Program();
 
 			var poisoned = p.PickApples()
-							.Take(10000)
-							.Where(apple => apple.Poisoned == true)
-							.Count();
+				.Take(10000)
+				.Where(apple => apple.Poisoned == true)
+				.Count();
 
 			var mostCommonPoisenedColor = p.PickApples()
 				.Take(10000)
