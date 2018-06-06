@@ -14,20 +14,21 @@ namespace PoisenedApples
 
 			var poisoned = p.PickApples()
 				.Take(10000)
-				.Where(apple => apple.Poisoned == true)
-				.Count();
+				.Count(apple => apple.Poisoned);
 
 			var mostCommonPoisenedColor = p.PickApples()
 				.Take(10000)
-				.Where(apple => apple.Poisoned == true)
+				.Where(apple => apple.Poisoned)
 				.GroupBy(apple => apple.Colour)
 				.Select(apple => new { colour = apple.Key, count = apple.Count() })
-				.FirstOrDefault(apple => apple.colour != "Red");
+				.OrderByDescending(a => a.count)
+				.Skip(1)
+				.First();
 
 			var nonPoisonedRedInARow = p.PickApples()
 				.Take(10000)
+				.TakeWhile(a=> !a.Poisoned)
 				.Where(apple => apple.Colour == "Red")
-				.TakeWhile(apple => !apple.Poisoned)
 				.Count();
 
 			var sequentialGreenApples = p.PickApples()
@@ -35,12 +36,12 @@ namespace PoisenedApples
 				.Skip(1)
 				.Zip(p.PickApples()
 				.Take(10000), (a, b) => a.Colour == "Green" && b.Colour == "Green")
-				.Where(a => a == true)
+				.Where(a => a)
 				.Count();
 
 
 			Console.WriteLine($"Poisoned apples in 10,000 = {poisoned}");
-			Console.WriteLine($"Most Common Color for Poisoned apples = {mostCommonPoisenedColor.colour}, {mostCommonPoisenedColor.count}");
+			Console.WriteLine($"Most Common Color for Poisoned apples = {mostCommonPoisenedColor.colour} with a count of {mostCommonPoisenedColor.count}");
 			Console.WriteLine($"Max non Poisoned Red Apples in a row = {nonPoisonedRedInARow}");
 			Console.WriteLine($"Total number of sequential green apples = {sequentialGreenApples}");
 
